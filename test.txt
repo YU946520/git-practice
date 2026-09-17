@@ -1,4 +1,0 @@
-hello
-changed from github
-changed from local
-change from dev
