@@ -8,20 +8,20 @@ phases:
     - echo Installing dependnciess...
     - npm install
 
-pre_build:
-  commands:
-    - echo Nothing to do...
-    - ls -l
+  pre_build:
+    commands:
+      - echo Nothing to do...
+      - ls -l
 
-build:
-  commands:
-    - echo Build started on `date`
-    - npm run build
-    - ls -l
+  build:
+    commands:
+      - echo Build started on `date`
+      - npm run build
+      - ls -l
 
-post_build:
-  commands:
-    - echo Build completed on `date`
+  post_build:
+    commands:
+      - echo Build completed on `date`
 
 artifacts:
   files:
