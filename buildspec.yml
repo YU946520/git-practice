@@ -24,7 +24,7 @@ post_build:
     - echo Build completed on `date`
 
 artifacts:
-    files:
-    - 'appspec.yml'
-    - 'dist/shop/**/*'
-    - appspec.yml
+  files:
+    - '**/*'
+  exclude-paths:
+    - 'node_modules/**/*'
