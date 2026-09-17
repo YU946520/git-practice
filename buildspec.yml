@@ -10,21 +10,27 @@ phases:
 
   pre_build:
     commands:
-      - echo Nothing to do...
-      - ls -l
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - REPOSITORY_URI=770170581848.dkr.ecr.ap-northeast-1.amazonaws.com/class
+      - IMAGE_TAG=$(date +%Y%m%d%H%M%S)
+      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 770170581848.dkr.ecr.ap-northeast-1.amazonaws.com
 
   build:
     commands:
       - echo Build started on `date`
       - npm run build
-      - ls -l
+      - echo Building the Docker image...
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
 
   post_build:
     commands:
-      - echo Build completed on `date`
+      - echo Pushing the Docker image to ECR...
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - printf '[{"name":"web","imageUri":"%s"}]' "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json
 
 artifacts:
   files:
-    - '**/*'
-  exclude-paths:
-    - 'node_modules/**/*'
+    - imagedefinitions.json
